@@ -5,7 +5,7 @@ main session and cheaper sub-agents, so the expensive model thinks and the cheap
 
 | Skill | Main session | Sub-agents | Use when |
 |---|---|---|---|
-| [`opus-orchestrator`](skills/opus-orchestrator/SKILL.md) | Opus investigates, writes the spec, reviews the diff | Sonnet or Haiku implements and applies review fixes | Hard problems: root-cause analysis, reverse engineering, anything where the plan matters more than the typing |
+| [`opus-orchestrator`](skills/opus-orchestrator/SKILL.md) | Opus investigates, writes the spec, reviews the diff | Sonnet or Haiku implements and applies review fixes; a Sonnet implementer may delegate pieces to Haiku helpers | Hard problems: root-cause analysis, reverse engineering, anything where the plan matters more than the typing |
 | [`sonnet-orchestrator`](skills/sonnet-orchestrator/SKILL.md) | Sonnet splits the task, routes pieces, integrates | Sonnet for complex pieces, Haiku for simple ones | Larger, well-understood tasks that split into many independent pieces |
 
 ## Install
@@ -42,6 +42,8 @@ committed), and how to build or verify. The agents only know what the spec tells
 1. **Investigate** (main session): read the code, find the root cause, write a spec complete
    enough that the implementer makes no design decisions.
 2. **Implement** (Sonnet or Haiku): make only the specified changes, build, report the diff.
+   A Sonnet implementer may split its work into independent pieces and delegate them to
+   Haiku helpers in parallel, then integrate, build, and report which pieces went to Haiku.
 3. **Review** (main session): read the real diff and build output, list required changes.
 4. **Fix**: send the list back to an agent, re-review until clean, then commit.
 
