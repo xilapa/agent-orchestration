@@ -6,7 +6,7 @@ main session and cheaper sub-agents, so the expensive model thinks and the cheap
 | Skill | Main session | Sub-agents | Use when |
 |---|---|---|---|
 | [`opus-orchestrator`](skills/opus-orchestrator/SKILL.md) | Opus investigates, writes the spec, reviews the diff | Sonnet or Haiku implements and applies review fixes; a Sonnet implementer may delegate pieces to Haiku helpers | Hard problems: root-cause analysis, reverse engineering, anything where the plan matters more than the typing |
-| [`sonnet-orchestrator`](skills/sonnet-orchestrator/SKILL.md) | Sonnet splits the task, routes pieces, integrates | Sonnet for complex pieces, Haiku for simple ones | Larger, well-understood tasks that split into many independent pieces |
+| [`sonnet-orchestrator`](skills/sonnet-orchestrator/SKILL.md) | Sonnet investigates, splits the task, routes pieces, reviews the diff | Sonnet for complex pieces, Haiku for simple ones; a Sonnet implementer may delegate to Haiku helpers | Larger, well-understood tasks that split into many independent pieces |
 
 ## Install
 
@@ -49,11 +49,16 @@ committed), and how to build or verify. The agents only know what the spec tells
 
 ### How `sonnet-orchestrator` works
 
-1. **Decompose** the task and score each piece 1-10 for complexity.
-2. **Delegate**: 1-3 goes to Haiku, 6-10 to Sonnet, 4-5 to Haiku only if the spec covers every
-   edge case. When in doubt, Sonnet.
-3. **Sub-delegate**: a Sonnet sub-agent may split its piece and spawn Haiku agents.
-4. **Integrate**: read the real diff, check it against the requirements, send fixes back.
+1. **Investigate and decompose** (main session): read the code, find the root cause or the
+   design, split the task into pieces, score each 1-10 for complexity, and write a spec per piece.
+2. **Implement** (Sonnet or Haiku): 1-3 goes to Haiku, 6-10 to Sonnet, 4-5 to Haiku only if the
+   spec covers every edge case. When in doubt, Sonnet. A Sonnet implementer may split its piece
+   and delegate sub-pieces to Haiku helpers in parallel, then integrate, build, and report
+   which went to Haiku.
+3. **Review** (main session): read the real diff and build output, list required changes.
+4. **Fix**: send the list back to an agent, re-review until clean, then commit.
+
+Investigation, root-cause analysis, design decisions and review are never delegated.
 
 ## Limits
 
