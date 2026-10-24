@@ -72,3 +72,7 @@ spawn a helper refused. A prompt that omits the depth line gets no such protecti
 - Sub-delegation needs the Agent tool to be available to the Sonnet sub-agent. If it is not,
   the main session launches the Haiku agents itself.
 - Check `git diff` yourself after a run; the skills tell the main session to do the same.
+
+## License
+
+[MIT](LICENSE)
